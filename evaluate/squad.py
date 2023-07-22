@@ -1,5 +1,6 @@
 import torch
 from datasets import load_metric
+import os
 
 from dataset.squad import create_and_fill_np_array, post_processing_function
 from utils.arch import apply_neuron_mask
@@ -15,6 +16,7 @@ def eval_squad_acc(
     eval_dataset,
     eval_examples,
     task_name,
+    prune_model_output_path
 ):
     metric = load_metric(task_name)
 
@@ -32,6 +34,7 @@ def eval_squad_acc(
 
         all_start_logits.append(start_logits.cpu().numpy())
         all_end_logits.append(end_logits.cpu().numpy())
+    torch.save(model, os.path.join(prune_model_output_path,"pruned_model.pt"))
     for handle in handles:
         handle.remove()
 

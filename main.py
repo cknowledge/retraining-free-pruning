@@ -215,7 +215,7 @@ def main():
     logger.info(f"{args.task_name} Pruning time (s): {end - start}")
 
     # Evaluate the accuracy
-    test_acc = test_accuracy(model, head_mask, neuron_mask, tokenizer, args.task_name)
+    test_acc = test_accuracy(model, head_mask, neuron_mask, tokenizer, args.task_name, args.output_dir)
     logger.info(f"{args.task_name} Test accuracy: {test_acc:.4f}")
 
     # Save the masks
