@@ -128,7 +128,7 @@ def main():
         training_dataset,
         np.random.choice(len(training_dataset), args.num_samples).tolist(),
     )
-    print(sample_dataset[0:]['input_ids'])
+    dummy_inp_onnx = torch.tensor(sample_dataset[0:]['input_ids'])
     sample_batch_size = int((12 if IS_SQUAD else 32) * (0.5 if IS_LARGE else 1))
     sample_dataloader = DataLoader(
         sample_dataset,
@@ -222,7 +222,7 @@ def main():
     torch.save(model_to_save.state_dict(), os.path.join(args.output_dir, "pruned_model.pt"))
 
     # Export the model to ONNX format
-    # torch.onnx.export(model_to_save, (head_mask, **batch),os.path.join(prune_model_op_path, "pruned_model.onnx"),opset_version=11)
+    torch.onnx.export(model_to_save, dummy_inp_onnx,os.path.join(args.output_dir, "pruned_model.onnx"),opset_version=11)
 
     print("Pruned model saved in:"+ args.output_dir) 
 
