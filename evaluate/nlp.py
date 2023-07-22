@@ -18,7 +18,7 @@ def test_accuracy(model, head_mask, neuron_mask, tokenizer, task_name, prune_mod
             batch_size=test_batch_size,
             pad_to_max=False,
         )
-        acc = eval_squad_acc(
+        acc, model_to_save = eval_squad_acc(
             model,
             head_mask,
             neuron_mask,
@@ -36,7 +36,7 @@ def test_accuracy(model, head_mask, neuron_mask, tokenizer, task_name, prune_mod
             batch_size=test_batch_size,
             pad_to_max=False,
         )
-        acc = eval_glue_acc(
+        acc, model_to_save = eval_glue_acc(
             model,
             head_mask,
             neuron_mask,
@@ -44,4 +44,4 @@ def test_accuracy(model, head_mask, neuron_mask, tokenizer, task_name, prune_mod
             task_name,
             prune_model_op_path
         )
-    return acc
+    return acc, model_to_save

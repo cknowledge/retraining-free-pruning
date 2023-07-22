@@ -34,7 +34,7 @@ def eval_squad_acc(
 
         all_start_logits.append(start_logits.cpu().numpy())
         all_end_logits.append(end_logits.cpu().numpy())
-    torch.save(model, os.path.join(prune_model_output_path,"pruned_model.pt"))
+    # torch.save(model, os.path.join(prune_model_output_path,"pruned_model.pt"))
     for handle in handles:
         handle.remove()
 
@@ -48,7 +48,8 @@ def eval_squad_acc(
     prediction = post_processing_function(task_name, eval_examples, eval_dataset, outputs_numpy)
     eval_results = metric.compute(predictions=prediction.predictions, references=prediction.label_ids)
     accuracy = eval_results["f1"]
-    return accuracy
+    model_to_save = True
+    return accuracy, model_to_save
 
 
 @torch.no_grad()

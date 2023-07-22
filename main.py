@@ -128,6 +128,7 @@ def main():
         training_dataset,
         np.random.choice(len(training_dataset), args.num_samples).tolist(),
     )
+    print(sample_dataset)
     sample_batch_size = int((12 if IS_SQUAD else 32) * (0.5 if IS_LARGE else 1))
     sample_dataloader = DataLoader(
         sample_dataset,
@@ -215,8 +216,15 @@ def main():
     logger.info(f"{args.task_name} Pruning time (s): {end - start}")
 
     # Evaluate the accuracy
-    test_acc = test_accuracy(model, head_mask, neuron_mask, tokenizer, args.task_name, args.output_dir)
+    test_acc, model_to_save = test_accuracy(model, head_mask, neuron_mask, tokenizer, args.task_name, args.output_dir)
     logger.info(f"{args.task_name} Test accuracy: {test_acc:.4f}")
+
+    torch.save(model_to_save.state_dict(), os.path.join(args.output_dir, "pruned_model.pt"))
+
+    # Export the model to ONNX format
+    # torch.onnx.export(model_to_save, (head_mask, **batch),os.path.join(prune_model_op_path, "pruned_model.onnx"),opset_version=11)
+
+    print("Pruned model saved in:"+ args.output_dir) 
 
     # Save the masks
     torch.save(head_mask, os.path.join(args.output_dir, "head_mask.pt"))
