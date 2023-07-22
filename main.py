@@ -129,8 +129,11 @@ def main():
         training_dataset,
         np.random.choice(len(training_dataset), args.num_samples).tolist(),
     )
+    
+    #creating dummy input for the onnx convertion
     dummy_inp_seq = [torch.tensor(seq) for seq in sample_dataset[0:]['input_ids']]
-    dummy_inp_onnx = pad_sequence(dummy_inp_seq, batch_first=True, padding_value=0, max_len=45)
+    dummy_inp_onnx = pad_sequence(dummy_inp_seq, batch_first=True, padding_value=0)
+    
     sample_batch_size = int((12 if IS_SQUAD else 32) * (0.5 if IS_LARGE else 1))
     sample_dataloader = DataLoader(
         sample_dataset,
