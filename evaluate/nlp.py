@@ -42,5 +42,6 @@ def test_accuracy(model, head_mask, neuron_mask, tokenizer, task_name, prune_mod
             neuron_mask,
             test_dataloader,
             task_name,
+            prune_model_op_path
         )
     return acc

@@ -6,7 +6,7 @@ from dataset.glue import target_dev_metric
 
 
 @torch.no_grad()
-def eval_glue_acc(model, head_mask, neuron_mask, dataloader, task_name):
+def eval_glue_acc(model, head_mask, neuron_mask, dataloader, task_name,prune_model_op_path):
     IS_STSB = model.num_labels == 1
     metric = load_metric("glue", task_name)
 
@@ -25,6 +25,8 @@ def eval_glue_acc(model, head_mask, neuron_mask, dataloader, task_name):
             predictions=predictions,
             references=batch["labels"],
         )
+    torch.save(model, os.path.join(prune_model_op_path,"pruned_model.pt"))  
+    print("Pruned model saved in:"+ prune_model_op_path) 
     for handle in handles:
         handle.remove()
 
