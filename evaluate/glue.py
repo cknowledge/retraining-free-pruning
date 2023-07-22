@@ -26,7 +26,10 @@ def eval_glue_acc(model, head_mask, neuron_mask, dataloader, task_name,prune_mod
             predictions=predictions,
             references=batch["labels"],
         )
-    torch.save(model, os.path.join(prune_model_op_path,"pruned_model.pt"))  
+    # Save the model after applying the head and neuron mask
+    model_to_save = model.module if hasattr(model, "module") else model  # Take care of DataParallel
+    torch.save(model_to_save.state_dict(), os.path.join(prune_model_op_path, "pruned_model.pt"))
+     
     print("Pruned model saved in:"+ prune_model_op_path) 
     for handle in handles:
         handle.remove()
