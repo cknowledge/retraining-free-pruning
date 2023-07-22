@@ -128,7 +128,7 @@ def main():
         training_dataset,
         np.random.choice(len(training_dataset), args.num_samples).tolist(),
     )
-    print(sample_dataset[0]['input_ids'])
+    print(sample_dataset[0:]['input_ids'])
     sample_batch_size = int((12 if IS_SQUAD else 32) * (0.5 if IS_LARGE else 1))
     sample_dataloader = DataLoader(
         sample_dataset,
