@@ -15,8 +15,7 @@ def eval_squad_acc(
     dataloader,
     eval_dataset,
     eval_examples,
-    task_name,
-    prune_model_output_path
+    task_name
 ):
     metric = load_metric(task_name)
 
@@ -34,7 +33,7 @@ def eval_squad_acc(
 
         all_start_logits.append(start_logits.cpu().numpy())
         all_end_logits.append(end_logits.cpu().numpy())
-    # torch.save(model, os.path.join(prune_model_output_path,"pruned_model.pt"))
+    model_to_save = model.module if hasattr(model, "module") else model
     for handle in handles:
         handle.remove()
 

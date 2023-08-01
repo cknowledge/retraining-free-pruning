@@ -7,7 +7,7 @@ from dataset.glue import target_dev_metric
 
 
 @torch.no_grad()
-def eval_glue_acc(model, head_mask, neuron_mask, dataloader, task_name,prune_model_op_path):
+def eval_glue_acc(model, head_mask, neuron_mask, dataloader, task_name):
     IS_STSB = model.num_labels == 1
     metric = load_metric("glue", task_name)
 
