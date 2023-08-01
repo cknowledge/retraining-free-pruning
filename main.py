@@ -131,7 +131,7 @@ def main():
     )
     
     #creating dummy input for the onnx convertion
-    dummy_inp_seq = [torch.tensor(seq) for seq in sample_dataset[0:]['input_ids']]
+    dummy_inp_seq = [torch.tensor(seq) for seq in sample_dataset[0:32]['input_ids']]
     print(len(dummy_inp_seq))
     dummy_inp_onnx = pad_sequence(dummy_inp_seq, batch_first=True, padding_value=0).to('cuda')
     
