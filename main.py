@@ -227,10 +227,6 @@ def main():
 
     torch.save(model_to_save.state_dict(), os.path.join(args.output_dir, "pruned_model.pt"))
 
-    # set memory limit to 10 gb
-    memory_limit_bytes = 10 * 1024 * 1024 * 1024
-    torch.cuda.memory_limit(device=None, limit=memory_limit_bytes)  # set 10 gb memory limit for all gpu
-
     # Export the model to ONNX format
     torch.onnx.export(model_to_save, dummy_inp_onnx,os.path.join(args.output_dir, "pruned_model.onnx"),opset_version=11)
 
