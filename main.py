@@ -132,6 +132,7 @@ def main():
     
     #creating dummy input for the onnx convertion
     dummy_inp_seq = [torch.tensor(seq) for seq in sample_dataset[0:]['input_ids']]
+    print(dummy_inp_seq.size())
     dummy_inp_onnx = pad_sequence(dummy_inp_seq, batch_first=True, padding_value=0).to('cuda')
     
     sample_batch_size = int((12 if IS_SQUAD else 32) * (0.5 if IS_LARGE else 1))
@@ -225,6 +226,10 @@ def main():
     logger.info(f"{args.task_name} Test accuracy: {test_acc:.4f}")
 
     torch.save(model_to_save.state_dict(), os.path.join(args.output_dir, "pruned_model.pt"))
+
+    # set memory limit to 10 gb
+    memory_limit_bytes = 10 * 1024 * 1024 * 1024
+    torch.cuda.memory_limit(device=None, limit=memory_limit_bytes)  # set 10 gb memory limit for all gpu
 
     # Export the model to ONNX format
     torch.onnx.export(model_to_save, dummy_inp_onnx,os.path.join(args.output_dir, "pruned_model.onnx"),opset_version=11)
