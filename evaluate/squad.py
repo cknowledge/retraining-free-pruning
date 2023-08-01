@@ -47,7 +47,6 @@ def eval_squad_acc(
     prediction = post_processing_function(task_name, eval_examples, eval_dataset, outputs_numpy)
     eval_results = metric.compute(predictions=prediction.predictions, references=prediction.label_ids)
     accuracy = eval_results["f1"]
-    model_to_save = True
     return accuracy, model_to_save
 
 
