@@ -230,7 +230,7 @@ def main():
     # Export the model to ONNX format
     torch.onnx.export(model_to_save, dummy_inp_onnx,os.path.join(args.output_dir, "pruned_model.onnx"),opset_version=11,
                       do_constant_folding=True, input_names = ['input_ids', 'input_mask', 'segment_ids'], output_names=['output_start_logits', 'output_end_logits'], 
-                      dynamic_axis={'input_ids' : {0 : 'batch_size'}, 'input_mask': {0 : 'batch_size'}, 'segment_ids': {0 : 'batch_size'}, 'output_start_logits' : {0 : 'batch_size'}, 'output_end_logits': {0 : 'batch_size'}})
+                      dynamic_axes={'input_ids' : {0 : 'batch_size'}, 'input_mask': {0 : 'batch_size'}, 'segment_ids': {0 : 'batch_size'}, 'output_start_logits' : {0 : 'batch_size'}, 'output_end_logits': {0 : 'batch_size'}})
 
     print("Pruned model saved in:"+ args.output_dir) 
 
