@@ -225,7 +225,8 @@ def main():
     test_acc, model_to_save = test_accuracy(model, head_mask, neuron_mask, tokenizer, args.task_name)
     logger.info(f"{args.task_name} Test accuracy: {test_acc:.4f}")
 
-    torch.save(model_to_save.state_dict(), os.path.join(args.output_dir, "pruned_model.pt"))
+    model_to_save.eval()
+    #torch.save(model_to_save.state_dict(), os.path.join(args.output_dir, "pruned_model.pt"))
 
     # Export the model to ONNX format
 #    torch.onnx.export(model_to_save, dummy_inp_onnx,os.path.join(args.output_dir, "pruned_model.onnx"),opset_version=11,

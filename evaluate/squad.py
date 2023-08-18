@@ -34,8 +34,9 @@ def eval_squad_acc(
         all_start_logits.append(start_logits.cpu().numpy())
         all_end_logits.append(end_logits.cpu().numpy())
     model_to_save = model.module if hasattr(model, "module") else model
-    for handle in handles:
-        handle.remove()
+    model_to_save.handles = handles
+    #for handle in handles:
+    #    handle.remove()
 
     max_len = max([x.shape[1] for x in all_start_logits])
     start_logits_concat = create_and_fill_np_array(all_start_logits, eval_dataset, max_len)
